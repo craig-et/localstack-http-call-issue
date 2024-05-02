@@ -1,0 +1,18 @@
+
+stages:
+  - functional
+
+default:
+  before_script:
+    - tail -n +1 /etc/*elease*
+
+fast-without-hostname:
+  stage: functional
+  script:
+    - make test
+
+slow-with-hostname:
+  stage: functional
+  script:
+    - echo "      - HOSTNAME=localstack" >> docker-compose.yaml
+    - make test

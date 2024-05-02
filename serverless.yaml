@@ -1,0 +1,23 @@
+service: http-call-issue
+
+plugins:
+  - serverless-localstack
+
+custom:
+  localstack:
+    debug: true
+    stages: local
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  timeout: 900
+
+package:
+  patterns:
+    - '!**'
+    - handler.js
+
+functions:
+  worker:
+    handler: src/handler.handler

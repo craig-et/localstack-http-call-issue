@@ -1,0 +1,26 @@
+version: '3.6'
+services:
+  host-one:
+    image: nginx
+    volumes: [ ./nginx-html:/usr/share/nginx/html ]
+  host-two:
+    image: nginx
+    volumes: [ ./nginx-html:/usr/share/nginx/html ]
+  host-three:
+    image: nginx
+    volumes: [ ./nginx-html:/usr/share/nginx/html ]
+
+  localstack:
+    image: 'localstack/localstack:3.3.0'
+    ports:
+      - '4566:4566'
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    environment:
+      - 'SERVICES=cloudformation,sts,kms,kinesis,lambda,ssm,iam,sqs,s3,dynamodb,logs'
+      - 'DOCKER_HOST=unix:///var/run/docker.sock'
+      - LOCALSTACK_HOST=localstack
+      - LAMBDA_DOCKER_NETWORK=bugtest_default
+      - LAMBDA_KEEPALIVE_MS=1
+      - DEBUG=1
+#      - HOSTNAME=localstack  # set by ci pipeline for concurrent testing
